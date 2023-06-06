@@ -198,8 +198,30 @@ function extractEmails(str) {
  *             '└──────────┘\n'
  *
  */
-function getRectangleString(/* width, height */) {
-  throw new Error('Not implemented');
+function getRectangleString(width, height) {
+  if (width < 2 && height < 2) {
+    return '';
+  }
+  const corners = {
+    leftTop: '┌',
+    rightTop: '┐',
+    leftBottom: '└',
+    rightBottom: '┘',
+  };
+
+  const result = [];
+
+  result.push(`${corners.leftTop}${'─'.repeat(width - 2)}${corners.rightTop}\n`);
+
+  if (height > 2) {
+    for (let i = 0; i < height - 2; i += 1) {
+      result.push(`│${' '.repeat(width - 2)}│\n`);
+    }
+  }
+
+  result.push(`${corners.leftBottom}${'─'.repeat(width - 2)}${corners.rightBottom}\n`);
+
+  return result.join('');
 }
 
 /**
@@ -218,8 +240,28 @@ function getRectangleString(/* width, height */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  const alphabetUpper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const alphabetLower = 'abcdefghijklmnopqrstuvwxyz';
+  const result = [];
+  const strArr = str.split('');
+  strArr.forEach((letter) => {
+    if (alphabetUpper.indexOf(letter) > -1 || alphabetLower.indexOf(letter) > -1) {
+      if (letter === letter.toUpperCase()) {
+        result.push(alphabetUpper.indexOf(letter) + 13 >= alphabetUpper.length
+          ? alphabetUpper.charAt(alphabetUpper.indexOf(letter) + 13 - alphabetUpper.length)
+          : alphabetUpper.charAt(alphabetUpper.indexOf(letter) + 13));
+      } else {
+        result.push(alphabetLower.indexOf(letter) + 13 >= alphabetLower.length
+          ? alphabetLower.charAt(alphabetLower.indexOf(letter) + 13 - alphabetLower.length)
+          : alphabetLower.charAt(alphabetLower.indexOf(letter) + 13));
+      }
+    } else {
+      result.push(letter);
+    }
+  });
+
+  return result.join('');
 }
 
 /**
