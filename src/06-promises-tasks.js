@@ -107,7 +107,7 @@ function chainPromises(array, action) {
     array.forEach((prom) => {
       prom.then((val) => {
         result.push(val);
-      }).catch((err) => console.error(`${err}`));
+      }).catch((err) => err);
     });
     resolve(result);
   }).then((val) => val.reduce(action));
