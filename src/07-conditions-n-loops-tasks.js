@@ -503,8 +503,66 @@ function getMatrixProduct(m1, m2) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(pos) {
+  const X = 'X';
+  const O = '0';
+
+  function checkRows(possibleWinner) {
+    let winner = null;
+    pos.forEach((row) => {
+      if (row.length < pos.length) {
+        row.push(...new Array(pos.length - row.length).fill(undefined));
+      }
+      if (row.every((cell) => cell === possibleWinner)) {
+        winner = possibleWinner;
+      }
+    });
+    return winner;
+  }
+
+  function checkCols(possibleWinner) {
+    let winner = null;
+    for (let index = 0; index < pos.length; index += 1) {
+      const col = [];
+      for (let k = 0; k < pos[index].length; k += 1) {
+        const element = pos[k][index];
+        col.push(element);
+      }
+      if (col.every((cell) => cell === possibleWinner)) {
+        winner = possibleWinner;
+      }
+    }
+    return winner;
+  }
+
+  function checkDiagonals(possibleWinner) {
+    let winner = null;
+    const mainDiag = [];
+    const secondDiag = [];
+    for (let index = 0; index < pos.length; index += 1) {
+      mainDiag.push(pos[index][index]);
+    }
+    for (let index = pos.length - 1; index >= 0; index -= 1) {
+      secondDiag.push(pos[pos.length - index - 1][index]);
+    }
+
+    if (
+      mainDiag.every((cell) => cell === possibleWinner)
+      || secondDiag.every((cell) => cell === possibleWinner)
+    ) {
+      winner = possibleWinner;
+    }
+    return winner;
+  }
+
+  if (checkRows(X) || checkCols(X) || checkDiagonals(X)) {
+    return X;
+  }
+  if (checkRows(O) || checkCols(O) || checkDiagonals(O)) {
+    return O;
+  }
+
+  return null;
 }
 
 module.exports = {
