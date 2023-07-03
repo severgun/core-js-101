@@ -134,10 +134,12 @@ function isTriangle(a, b, c) {
  *
  */
 function doRectanglesOverlap(rect1, rect2) {
-  return !(rect1.left + rect1.width < rect2.left
+  return !(
+    rect1.left + rect1.width < rect2.left
     || rect1.top + rect1.height < rect2.top
     || rect1.left > rect2.left + rect2.width
-    || rect1.top > rect2.top + rect2.height);
+    || rect1.top > rect2.top + rect2.height
+  );
 }
 
 /**
@@ -167,8 +169,11 @@ function doRectanglesOverlap(rect1, rect2) {
  *
  */
 function isInsideCircle(circle, point) {
-  return Math.sqrt((point.x - circle.center.x) ** 2
-    + (point.y - circle.center.y) ** 2) < circle.radius;
+  return (
+    Math.sqrt(
+      (point.x - circle.center.x) ** 2 + (point.y - circle.center.y) ** 2,
+    ) < circle.radius
+  );
 }
 
 /**
@@ -184,7 +189,7 @@ function isInsideCircle(circle, point) {
  */
 function findFirstSingleChar(str) {
   const freq = str.split('').reduce((acc, el) => {
-    acc[el] = acc[el] ? acc[el] += 1 : 1;
+    acc[el] = acc[el] ? (acc[el] += 1) : 1;
     return acc;
   }, {});
   const res = Object.entries(freq).find((element) => element[1] === 1);
@@ -300,7 +305,9 @@ function isCreditCardNumber(ccn) {
     }
   }
 
-  return checksumDigit === 0 ? (sum % 10) === checksumDigit : 10 - (sum % 10) === checksumDigit;
+  return checksumDigit === 0
+    ? sum % 10 === checksumDigit
+    : 10 - (sum % 10) === checksumDigit;
 }
 
 /**
@@ -319,7 +326,7 @@ function isCreditCardNumber(ccn) {
  */
 function getDigitalRoot(num) {
   let sum = 0;
-  for (let remain = num; remain > 0;) {
+  for (let remain = num; remain > 0; 0) {
     sum += remain % 10;
     remain = Math.trunc(remain / 10);
   }
@@ -416,8 +423,10 @@ function toNaryString(num, n) {
  */
 function getCommonDirectoryPath(pathes) {
   const res = [];
-  const shortestPath = pathes
-    .reduce((acc, str) => (str.length < acc.length ? str : acc), pathes[0]);
+  const shortestPath = pathes.reduce(
+    (acc, str) => (str.length < acc.length ? str : acc),
+    pathes[0],
+  );
 
   for (let index = 0; index < shortestPath.length; index += 1) {
     const sign = shortestPath[index];
