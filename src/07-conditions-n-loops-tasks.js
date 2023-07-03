@@ -134,10 +134,12 @@ function isTriangle(a, b, c) {
  *
  */
 function doRectanglesOverlap(rect1, rect2) {
-  return !(rect1.left + rect1.width < rect2.left
+  return !(
+    rect1.left + rect1.width < rect2.left
     || rect1.top + rect1.height < rect2.top
     || rect1.left > rect2.left + rect2.width
-    || rect1.top > rect2.top + rect2.height);
+    || rect1.top > rect2.top + rect2.height
+  );
 }
 
 /**
@@ -167,8 +169,11 @@ function doRectanglesOverlap(rect1, rect2) {
  *
  */
 function isInsideCircle(circle, point) {
-  return Math.sqrt((point.x - circle.center.x) ** 2
-    + (point.y - circle.center.y) ** 2) < circle.radius;
+  return (
+    Math.sqrt(
+      (point.x - circle.center.x) ** 2 + (point.y - circle.center.y) ** 2,
+    ) < circle.radius
+  );
 }
 
 /**
@@ -184,7 +189,7 @@ function isInsideCircle(circle, point) {
  */
 function findFirstSingleChar(str) {
   const freq = str.split('').reduce((acc, el) => {
-    acc[el] = acc[el] ? acc[el] += 1 : 1;
+    acc[el] = acc[el] ? (acc[el] += 1) : 1;
     return acc;
   }, {});
   const res = Object.entries(freq).find((element) => element[1] === 1);
@@ -300,7 +305,9 @@ function isCreditCardNumber(ccn) {
     }
   }
 
-  return checksumDigit === 0 ? (sum % 10) === checksumDigit : 10 - (sum % 10) === checksumDigit;
+  return checksumDigit === 0
+    ? sum % 10 === checksumDigit
+    : 10 - (sum % 10) === checksumDigit;
 }
 
 /**
@@ -319,7 +326,7 @@ function isCreditCardNumber(ccn) {
  */
 function getDigitalRoot(num) {
   let sum = 0;
-  for (let remain = num; remain > 0;) {
+  for (let remain = num; remain > 0; 0) {
     sum += remain % 10;
     remain = Math.trunc(remain / 10);
   }
@@ -416,8 +423,10 @@ function toNaryString(num, n) {
  */
 function getCommonDirectoryPath(pathes) {
   const res = [];
-  const shortestPath = pathes
-    .reduce((acc, str) => (str.length < acc.length ? str : acc), pathes[0]);
+  const shortestPath = pathes.reduce(
+    (acc, str) => (str.length < acc.length ? str : acc),
+    pathes[0],
+  );
 
   for (let index = 0; index < shortestPath.length; index += 1) {
     const sign = shortestPath[index];
@@ -494,8 +503,66 @@ function getMatrixProduct(m1, m2) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(pos) {
+  const X = 'X';
+  const O = '0';
+
+  function checkRows(possibleWinner) {
+    let winner = null;
+    pos.forEach((row) => {
+      if (row.length < pos.length) {
+        row.push(...new Array(pos.length - row.length).fill(undefined));
+      }
+      if (row.every((cell) => cell === possibleWinner)) {
+        winner = possibleWinner;
+      }
+    });
+    return winner;
+  }
+
+  function checkCols(possibleWinner) {
+    let winner = null;
+    for (let index = 0; index < pos.length; index += 1) {
+      const col = [];
+      for (let k = 0; k < pos[index].length; k += 1) {
+        const element = pos[k][index];
+        col.push(element);
+      }
+      if (col.every((cell) => cell === possibleWinner)) {
+        winner = possibleWinner;
+      }
+    }
+    return winner;
+  }
+
+  function checkDiagonals(possibleWinner) {
+    let winner = null;
+    const mainDiag = [];
+    const secondDiag = [];
+    for (let index = 0; index < pos.length; index += 1) {
+      mainDiag.push(pos[index][index]);
+    }
+    for (let index = pos.length - 1; index >= 0; index -= 1) {
+      secondDiag.push(pos[pos.length - index - 1][index]);
+    }
+
+    if (
+      mainDiag.every((cell) => cell === possibleWinner)
+      || secondDiag.every((cell) => cell === possibleWinner)
+    ) {
+      winner = possibleWinner;
+    }
+    return winner;
+  }
+
+  if (checkRows(X) || checkCols(X) || checkDiagonals(X)) {
+    return X;
+  }
+  if (checkRows(O) || checkCols(O) || checkDiagonals(O)) {
+    return O;
+  }
+
+  return null;
 }
 
 module.exports = {
